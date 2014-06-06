@@ -27,4 +27,15 @@ describe StringCalculator do
   it 'can use \n as delimiter' do
     expect(calculator.add("1\n999\n1000")).to eq 2000
   end
+
+  it 'allows you to chose arbitrary delimiter' do
+    expect(calculator.add('//
+
+                           1
+                           2
+                           3').to eq(5)
+
+    expect(calculator.add('//xyz
+                           1xyz2xyz3').to eq(5)
+  end
 end
