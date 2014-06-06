@@ -15,4 +15,8 @@ describe StringCalculator do
   it 'returns 0 if no parameters provided' do
     expect(subject.add).to eq(0)
   end
+
+  it 'returns sum of two numbers when two numbers are provided (separated by comma)' do
+    expect(subject.add('1,2')).to eq(3)
+  end
 end
