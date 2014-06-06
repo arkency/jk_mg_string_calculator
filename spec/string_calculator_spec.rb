@@ -33,9 +33,9 @@ describe StringCalculator do
 
                            1
                            2
-                           3').to eq(5)
+                           3')).to eq(6)
 
     expect(calculator.add('//xyz
-                           1xyz2xyz3').to eq(5)
+                           1xyz2xyz3')).to eq(6)
   end
 end
