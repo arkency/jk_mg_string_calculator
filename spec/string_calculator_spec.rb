@@ -38,4 +38,8 @@ describe StringCalculator do
     expect(calculator.add('//xyz
                            1xyz2xyz3')).to eq(6)
   end
+
+  it 'should not allow passing negative numbers in pattern' do
+    expect { calculator.add('1,2,-3') }.to raise_error(StringCalculator::NegativesNotAllowed)
+  end
 end
