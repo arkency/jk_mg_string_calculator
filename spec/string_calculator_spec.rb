@@ -1,4 +1,5 @@
 require 'rspec'
+require File.join(File.dirname(__FILE__), '..', 'lib/string_calculator')
 
 describe StringCalculator do
   subject { described_class.new }
