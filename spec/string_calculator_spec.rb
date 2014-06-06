@@ -11,4 +11,8 @@ describe StringCalculator do
   it 'returns number if one number provided' do
     expect(subject.add("1")).to eq(1)
   end
+
+  it 'returns 0 if no parameters provided' do
+    expect(subject.add).to eq(0)
+  end
 end
