@@ -5,10 +5,14 @@ class StringCalculator
 
   private
   def extract_numbers(pattern)
-    pattern.split(',').compact.map(&:to_i) << 0
+    pattern.split(allowed_delimiters).compact.map(&:to_i) << 0
   end
 
   def sum(numbers)
     numbers.reduce(:+)
+  end
+
+  def allowed_delimiters
+    %r{,|\n}
   end
 end
