@@ -19,4 +19,8 @@ describe StringCalculator do
   it 'returns sum of two numbers when two numbers are provided (separated by comma)' do
     expect(subject.add('1,2')).to eq(3)
   end
+
+  it 'can take arbitrary count of numbers and make a sum of it' do
+    expect(subject.add('1,2,3,4,5')).to eq(15)
+  end
 end
