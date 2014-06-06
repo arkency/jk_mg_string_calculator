@@ -1,11 +1,14 @@
 class StringCalculator
   def add(pattern="")
-    extracted_numbers(pattern).reduce(&:+).to_i
+    sum(extract_numbers(pattern))
   end
 
-  def extracted_numbers(pattern)
-    first_number, second_number = pattern.split(',').map(&:to_i)
+  private
+  def extract_numbers(pattern)
+    pattern.split(',').compact.map(&:to_i) << 0
+  end
 
-    [first_number, second_number].compact
+  def sum(numbers)
+    numbers.reduce(:+)
   end
 end
