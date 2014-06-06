@@ -23,4 +23,8 @@ describe StringCalculator do
   it 'can take arbitrary count of numbers and make a sum of it' do
     expect(calculator.add('1,2,3,4,5')).to eq(15)
   end
+
+  it 'can use \n as delimiter' do
+    expect(calculator.add("1\n999\n1000")).to eq 2000
+  end
 end
