@@ -1,11 +1,26 @@
 class StringCalculator
   DELIMITER_REGEXP = /\A\/\/(.+|\n)$/
 
+  class NegativesNotAllowed < StandardError
+    def initialize(negatives_found)
+      @negatives_found = negatives_found
+    end
+
+    attr_reader :negatives_found
+  end
+
   def add(pattern="")
-    sum(extract_numbers(pattern, delimiter(pattern)))
+    extracted_numbers = extract_numbers(pattern, delimiter(pattern))
+    negatives = negatives_within(extracted_numbers)
+    raise NegativesNotAllowed.new(negatives) unless negatives.empty?
+    sum(extracted_numbers)
   end
 
   private
+  def negatives_within(number_sequence)
+    number_sequence.find_all { |n| n < 0 }
+  end
+
   def extract_numbers(pattern, delimiter)
     pattern
       .gsub(DELIMITER_REGEXP,'')

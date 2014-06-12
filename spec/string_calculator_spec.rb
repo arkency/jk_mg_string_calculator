@@ -40,6 +40,13 @@ describe StringCalculator do
   end
 
   it 'should not allow passing negative numbers in pattern' do
-    expect { calculator.add('1,2,-3') }.to raise_error(StringCalculator::NegativesNotAllowed)
+    expect { calculator.add('1,2,-3') }.to raise_error do |error|
+      expect(error).to be_a(StringCalculator::NegativesNotAllowed)
+      expect(error.negatives_found).to include(-3)
+    end
+  end
+
+  it 'should ignore a number if it is greater than 1000' do
+    expect(calculator.add('1,1000,1001')).to eq(1001)
   end
 end
