@@ -1,6 +1,6 @@
 class StringCalculator
   DELIMITER_REGEXP = /\A\/\/(.+|\n)$/
-
+  
   class NegativesNotAllowed < StandardError
     def initialize(negatives_found)
       @negatives_found = negatives_found
@@ -30,11 +30,12 @@ class StringCalculator
   end
 
   def delimiter(pattern)
-    if DELIMITER_REGEXP =~ pattern
-      $1
-    else
-      default_delimiter
-    end
+    parser = DelimiterParser.new
+
+    delimiters = parser.delimiters(pattern)
+
+    reg = Regexp.new(delimiters.map { |delim| Regexp.escape(delim) }.join('|'))
+    reg
   end
 
   def sum(numbers)
@@ -44,4 +45,55 @@ class StringCalculator
   def default_delimiter
     %r{,|\n}
   end
+end
+
+class DelimiterParser
+  MULTIPLE_DELIMITER_REGEXP = %r{\[(.*?)\][\[|\n]}
+
+  def initialize(default_delimiters = [',', "\n"])
+    @default_delimiters = default_delimiters
+  end
+
+  def delimiters(pattern)
+    if pattern.start_with?('//')
+      delimiters_parsed(pattern)
+    else
+      default_delimiters
+    end
+  end
+
+  private
+  def delimiters_parsed(pattern)
+    stripped_pattern = pattern[2..-1]
+    delimiters_pattern = stripped_pattern.dup
+    delimiters = []
+
+    if stripped_pattern.start_with?('[')
+      while delimiters_pattern.start_with?('[')
+        delimiter, delimiters_pattern = parse_multiple_delimiters(delimiters_pattern)
+        delimiters << delimiter
+      end
+    else
+      delimiters << parse_single_delimiter(delimiters_pattern) 
+    end
+
+    delimiters
+  end
+
+  def parse_multiple_delimiters(delimiters_pattern)
+    match = delimiters_pattern.match(MULTIPLE_DELIMITER_REGEXP)
+    token = match[1]
+
+    [token, delimiters_pattern[(token.length + 2)..-1]]
+  end
+
+  def parse_single_delimiter(delimiters_pattern)
+    token = delimiters_pattern.chars.take_while { |c| c != "\n" }.join
+    if token.empty?
+      token = delimiters_pattern.chars.take_while { |c| c == "\n" }.tap { |arr| arr.pop }.join
+    end
+
+    token
+  end
+  attr_reader :default_delimiters
 end

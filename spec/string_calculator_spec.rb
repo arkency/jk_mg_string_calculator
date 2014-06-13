@@ -51,6 +51,6 @@ describe StringCalculator do
 
   it 'should allow delimiters of any length, wrapped by []' do
     expect(calculator.add("//[123]\n321123321")).to eq(642)
-    expect(calculator.add("//[[]\1[n10[100[1000[10000")).to eq(1111)
+    expect(calculator.add("//[[]\n1[10[100[1000[10000")).to eq(1111)
   end
 end
