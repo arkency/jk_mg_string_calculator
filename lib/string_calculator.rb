@@ -38,7 +38,7 @@ class StringCalculator
   end
 
   def sum(numbers)
-    numbers.reduce(0, :+)
+    numbers.reject{|x| x > 1000}.reduce(0, :+)
   end
 
   def default_delimiter
